@@ -1,0 +1,115 @@
+import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
+import './Lab7.css';
+
+const Lab7 = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    const templateParams = {
+      from_name: name,
+      from_email: email,
+      to_name: 'Manoja',
+      message: message,
+    };
+
+    emailjs.send(
+      'service_xj6osc4',
+      'template_sviiyid',
+      templateParams,
+      'eMztaWhdPan6k1a3f'
+    ).then(
+      (result) => {
+        console.log("Email sent:", result.text);
+        alert('Email sent successfully!');
+        setName('');
+        setEmail('');
+        setMessage('');
+      },
+      (error) => {
+        console.error("Failed:", error.text);
+        alert('Failed to send email.');
+      }
+    );
+  };
+
+  return (
+    <div className="contact-container">
+      
+      <h2>Contact Us</h2>
+      <form onSubmit={sendEmail}>
+        <label>Name:</label>
+        <input
+          type="text"
+          name="user_name"
+          placeholder="Your Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        /><br></br>
+        <br></br>
+        <label>Email:</label>
+        <input
+          type="email"
+          name="user_email"
+          placeholder="Your Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <br></br>
+        <br></br>
+        <label>Message:</label>
+        <textarea
+          name="message"
+          placeholder="Your Message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+        />
+        <br></br>
+        <br></br>
+        <input type="submit" value="Send Email" />
+      </form>
+    </div>
+  );
+};
+
+export default Lab7;
+//App.js
+import React, { useState, useEffect } from 'react';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+
+function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('loggedInUser');
+    if (savedUser) {
+      setUser(savedUser);
+    }
+  }, []);
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('loggedInUser');
+  };
+
+  return (
+    <div className="App">
+      {user ? (
+        <Dashboard user={user} logout={logout} />
+      ) : (
+        <Login setUser={setUser} />
+      )}
+    </div>
+  );
+}
+
+export default App;
+
