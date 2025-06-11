@@ -81,35 +81,15 @@ const Lab7 = () => {
 
 export default Lab7;
 //App.js
-import React, { useState, useEffect } from 'react';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import React from 'react';
+import Lab7 from './components/Lab7';
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem('loggedInUser');
-    if (savedUser) {
-      setUser(savedUser);
-    }
-  }, []);
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('loggedInUser');
-  };
-
   return (
     <div className="App">
-      {user ? (
-        <Dashboard user={user} logout={logout} />
-      ) : (
-        <Login setUser={setUser} />
-      )}
+      <Lab7 />
     </div>
   );
 }
 
 export default App;
-
